@@ -262,4 +262,17 @@ public class AppUserService implements IAppUserService {
     public void updatePass(AppUser appUser) {
         appUserRepository.updatePass(appUser);
     }
+
+    @Override
+    public Optional<Object> getObjByAppUser(AppUser appUser) {
+
+        Customer customer = customerService.findCustomerByAppUser(appUser.getId()).orElse(null);
+        Employee employee = employeeService.getEmployeeByUserName(appUser.getUserName()).orElse(null);
+
+        if (customer != null) {
+            return Optional.of(customer);
+        } else {
+            return Optional.ofNullable(employee);
+        }
+    }
 }

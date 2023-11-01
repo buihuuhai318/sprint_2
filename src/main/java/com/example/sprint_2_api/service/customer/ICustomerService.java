@@ -29,7 +29,7 @@ public interface ICustomerService {
 
     Optional<Customer> findCustomerByAppUser(Long appUserId);
 
-    void saveCustomerForAppUser(Long id);
+    void saveCustomerForAppUser(Long id, String name);
 
     Page<ICustomerDto> findAllCustomer(String name, String code, String address, String phoneNumber, String groupValue, Pageable pageable);
 

@@ -4,7 +4,7 @@ package com.example.sprint_2_api.controller.user;
 import com.example.sprint_2_api.common.user.RandomStringGenerator;
 import com.example.sprint_2_api.config.JwtTokenUtil;
 import com.example.sprint_2_api.dto.user.AppUserDto;
-import com.example.sprint_2_api.dto.user.FacebookMailRequest;
+import com.example.sprint_2_api.dto.user.FacebookUser;
 import com.example.sprint_2_api.dto.user.UserInfoDto;
 import com.example.sprint_2_api.model.user.AppUser;
 import com.example.sprint_2_api.model.user.JwtResponse;
@@ -337,32 +337,40 @@ public class AppUserController {
     }
 
     @PostMapping("/login-by-facebook")
-    public ResponseEntity<Object> loginByFacebook(@RequestBody FacebookMailRequest facebookMailRequest) {
+    public ResponseEntity<Object> loginByFacebook(@RequestBody FacebookUser facebookMailRequest) {
         if (facebookMailRequest == null ||
-                facebookMailRequest.getFacebookMail() == null ||
-                facebookMailRequest.getFacebookMail().trim().equals("")) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(LOGIN_FAILED);
+                facebookMailRequest.getEmail() == null ||
+                facebookMailRequest.getEmail().trim().equals("")) {
+            return ResponseEntity.badRequest().body(LOGIN_FAILED);
         }
 
-        String facebookMail = facebookMailRequest.getFacebookMail();
+        String facebookMail = facebookMailRequest.getEmail();
         boolean checkExistAppUser = appUserService.existsByUsername(facebookMail);
         if (!checkExistAppUser) {
             AppUser appUser = new AppUser();
             appUser.setUserName(facebookMail);
+            appUser.setEmail(facebookMail);
             String randomPassword = RandomStringGenerator.generateRandomString();
             appUser.setPassword(passwordEncoder.encode(randomPassword));
             appUserService.createNewAppUser(appUser, "ROLE_CUSTOMER");
             Long appUserId = appUserService.findAppUserIdByUserName(appUser.getUserName());
-            customerService.saveCustomerForAppUser(appUserId);
+            customerService.saveCustomerForAppUser(appUserId, facebookMailRequest.getName());
         }
         UserDetails userDetails = appUserService.loadUserByUsername(facebookMail);
 
         String jwtToken = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity
-                .ok()
-                .body(new JwtResponse(jwtToken));
+        return ResponseEntity.ok().body(new JwtResponse(jwtToken));
+    }
+
+    @GetMapping("/get-obj-by-user")
+    public ResponseEntity<Object> getObj (HttpServletRequest request) {
+        String userNameJWT = getUserNameFormJWT(request);
+        AppUser appUser = appUserService.findByUsername(userNameJWT).orElse(null);
+        if (appUser != null) {
+            return ResponseEntity.ok().body(appUserService.getObjByAppUser(appUser));
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

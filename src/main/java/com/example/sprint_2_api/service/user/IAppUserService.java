@@ -33,4 +33,6 @@ public interface IAppUserService extends UserDetailsService {
     void updateInfoUser(AppUser appUser);
 
     void updatePass(AppUser appUser);
+
+    Optional<Object> getObjByAppUser(AppUser appUser);
 }
