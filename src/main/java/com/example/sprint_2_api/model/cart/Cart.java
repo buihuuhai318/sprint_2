@@ -25,8 +25,8 @@ public class Cart {
     private AppUser appUser;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
-    private CharitableProject project;
+    @JoinColumn(name = "charitable_project_id", referencedColumnName = "id")
+    private CharitableProject charitableProject;
 
     @ManyToOne
     @JoinColumn(name = "bill_id", referencedColumnName = "id")

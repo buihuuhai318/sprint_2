@@ -4,6 +4,8 @@ import com.example.sprint_2_api.model.company.Company;
 import com.example.sprint_2_api.repository.company.ICompanyRepository;
 import com.example.sprint_2_api.service.company.ICompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,5 +35,10 @@ public class CompanyService implements ICompanyService {
     @Override
     public void remove(Long id) {
         companyRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Company> findAll(Pageable pageable) {
+        return companyRepository.findAll(pageable);
     }
 }

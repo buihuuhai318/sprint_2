@@ -21,12 +21,16 @@ public class CharitableProject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
+
+    private String description;
 
     private Date createDate;
 
     private Date endDate;
 
+    private Integer count;
+    private Long now;
     private Long target;
 
     @Column(columnDefinition = "LONGTEXT")

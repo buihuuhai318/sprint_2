@@ -1,9 +1,12 @@
 package com.example.sprint_2_api.service.project.impl;
 
+import com.example.sprint_2_api.dto.project.ProjectDto;
 import com.example.sprint_2_api.model.project.CharitableProject;
 import com.example.sprint_2_api.repository.project.ICharitableProjectRepository;
 import com.example.sprint_2_api.service.project.ICharitableProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,5 +36,15 @@ public class CharitableProjectService implements ICharitableProjectService {
     @Override
     public void remove(Long id) {
         charitableProjectRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<CharitableProject> findAll(Pageable pageable) {
+        return charitableProjectRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<ProjectDto> findAllByCard(Pageable pageable) {
+        return charitableProjectRepository.findAllByCard(pageable);
     }
 }
