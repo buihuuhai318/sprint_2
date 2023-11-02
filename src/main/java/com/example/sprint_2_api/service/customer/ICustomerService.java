@@ -2,12 +2,13 @@ package com.example.sprint_2_api.service.customer;
 
 import com.example.sprint_2_api.dto.customer.ICustomerDto;
 import com.example.sprint_2_api.model.customer.Customer;
+import com.example.sprint_2_api.service.IGenerateService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface ICustomerService {
+public interface ICustomerService extends IGenerateService<Customer> {
 
     int updateOnlineCustomer(Customer customer);
 

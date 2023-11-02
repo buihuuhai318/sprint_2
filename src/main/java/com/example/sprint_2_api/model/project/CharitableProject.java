@@ -1,7 +1,6 @@
-package com.example.sprint_2_api.model.Project;
+package com.example.sprint_2_api.model.project;
 
 import com.example.sprint_2_api.model.company.Company;
-import com.example.sprint_2_api.model.image.ImageProject;
 import com.example.sprint_2_api.model.user.AppUser;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Project {
+public class CharitableProject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +40,13 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     @JsonBackReference
-    private List<ImageProject> imageProjectList;
+    private List<ProjectImage> imageProjectList;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private AppUser appUser;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "charitableProjects")
+    private List<CharitableType> charitableTypes;
 }

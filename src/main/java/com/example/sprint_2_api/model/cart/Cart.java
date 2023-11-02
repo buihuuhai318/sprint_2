@@ -1,6 +1,6 @@
 package com.example.sprint_2_api.model.cart;
 
-import com.example.sprint_2_api.model.Project.Project;
+import com.example.sprint_2_api.model.project.CharitableProject;
 import com.example.sprint_2_api.model.bill.Bill;
 import com.example.sprint_2_api.model.user.AppUser;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class Cart {
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
-    private Project project;
+    private CharitableProject project;
 
     @ManyToOne
     @JoinColumn(name = "bill_id", referencedColumnName = "id")

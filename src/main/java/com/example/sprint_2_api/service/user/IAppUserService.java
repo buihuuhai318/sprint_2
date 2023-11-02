@@ -3,6 +3,7 @@ package com.example.sprint_2_api.service.user;
 
 
 import com.example.sprint_2_api.model.user.AppUser;
+import com.example.sprint_2_api.service.IGenerateService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -11,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 
-public interface IAppUserService extends UserDetailsService {
+public interface IAppUserService extends UserDetailsService, IGenerateService<AppUser> {
 
     Boolean existsByUsername(String userName);
 

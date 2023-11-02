@@ -275,4 +275,24 @@ public class AppUserService implements IAppUserService {
             return Optional.ofNullable(employee);
         }
     }
+
+    @Override
+    public List<AppUser> findAll() {
+        return appUserRepository.findAll();
+    }
+
+    @Override
+    public Optional<AppUser> findById(Long id) {
+        return appUserRepository.findById(id);
+    }
+
+    @Override
+    public void save(AppUser appUser) {
+        appUserRepository.save(appUser);
+    }
+
+    @Override
+    public void remove(Long id) {
+        appUserRepository.deleteById(id);
+    }
 }

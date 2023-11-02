@@ -1,6 +1,5 @@
-package com.example.sprint_2_api.model.image;
+package com.example.sprint_2_api.model.project;
 
-import com.example.sprint_2_api.model.Project.Project;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ImageProject {
+public class ProjectImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +21,5 @@ public class ImageProject {
 
     @ManyToOne
     @JoinColumn(name = "project_id",referencedColumnName = "id")
-    private Project project;
+    private CharitableProject project;
 }

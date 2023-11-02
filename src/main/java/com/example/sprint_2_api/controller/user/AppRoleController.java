@@ -15,17 +15,10 @@ import java.util.List;
 @CrossOrigin("*")
 @RequestMapping("/api/admin/admin/appRole")
 public class AppRoleController {
+
     @Autowired
     private IAppRoleService appRoleService;
 
-    /**
-     * method :findAllAppRole()
-     * created by :PhuocLQ
-     * date create: 10/09/2023
-     *
-     * @param:
-     * return: List<AppRole>
-     */
     @GetMapping("/list")
     public ResponseEntity<List<AppRole>> findAllAppRole(){
 

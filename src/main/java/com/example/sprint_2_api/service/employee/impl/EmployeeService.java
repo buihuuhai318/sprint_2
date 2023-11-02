@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -77,5 +78,25 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public Optional<Employee> getEmployeeByUserName(String username) {
         return employeeRepository.getEmployeeByUserName(username);
+    }
+
+    @Override
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public Optional<Employee> findById(Long id) {
+        return employeeRepository.findEmployeeById(id);
+    }
+
+    @Override
+    public void save(Employee employee) {
+        employeeRepository.save(employee);
+    }
+
+    @Override
+    public void remove(Long id) {
+        employeeRepository.deleteById(id);
     }
 }

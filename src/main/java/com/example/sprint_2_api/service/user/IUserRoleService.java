@@ -1,16 +1,8 @@
 package com.example.sprint_2_api.service.user;
 
 import com.example.sprint_2_api.model.user.UserRole;
+import com.example.sprint_2_api.service.IGenerateService;
 
-public interface IUserRoleService {
-    /**
-     * Author: CaoNV
-     * Date create: 15/09/2023
-     * Save employee
-     *
-     * @param userRole
-
-     * @return void
-     */
+public interface IUserRoleService extends IGenerateService<UserRole> {
     void createUserRole(UserRole userRole);
 }

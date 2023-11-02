@@ -8,12 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IAppRoleRepository extends JpaRepository<AppRole,Integer> {
-    @Query(nativeQuery = true,value = "select * from app_role")
+public interface IAppRoleRepository extends JpaRepository<AppRole, Long> {
+    @Query(nativeQuery = true, value = "select * from app_role")
     List<AppRole> getAllRole();
-
-
-
-    AppRole findById(Long id);
-
 }

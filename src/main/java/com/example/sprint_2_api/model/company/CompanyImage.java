@@ -5,25 +5,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class Company {
+public class CompanyImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String name;
-
-    private String description;
-
-    private Date date;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
-    private CompanyImage companyImage;
 }
