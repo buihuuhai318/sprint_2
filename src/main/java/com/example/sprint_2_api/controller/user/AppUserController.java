@@ -144,7 +144,7 @@ public class AppUserController {
                     .body(LOGIN_FAILED);
         }
 
-        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName()).orElse(null);
+        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName());
 
         String subject = "Yêu cầu đăng nhập - OTP có hiệu lực trong 5 phút!";
 
@@ -163,7 +163,7 @@ public class AppUserController {
     @PostMapping("/confirm")
     public ResponseEntity<Object> confirm(@RequestBody AppUserDto appUserDto) {
         try {
-            AppUser appUser = appUserService.findByUsername(appUserDto.getUserName()).orElse(null);
+            AppUser appUser = appUserService.findByUsername(appUserDto.getUserName());
             if (appUser != null) {
                 if (passwordEncoder.matches(appUserDto.getOtp(), appUser.getOneTimePassword()) && appUser.isOTPRequired()) {
 
@@ -193,7 +193,7 @@ public class AppUserController {
      */
     @PostMapping("/resetOTP")
     public ResponseEntity<Object> resetOTP(@RequestBody AppUserDto appUserDto) throws MessagingException, UnsupportedEncodingException {
-        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName()).orElse(null);
+        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName());
         if (appUser != null) {
             String subject = "Yêu cầu gửi lại OTP - OTP có hiệu lực trong 5 phút!";
             appUserService.generateOneTimePassword(appUser, passwordEncoder, subject, "Yêu cầu gửi lại OTP");
@@ -232,7 +232,7 @@ public class AppUserController {
                     .body("Đổi mật khẩu không thành công");
         }
 
-        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName()).orElse(null);
+        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName());
 
         String subject = "Yêu cầu đổi mật khẩu - OTP có hiệu lực trong 5 phút!";
 
@@ -250,7 +250,7 @@ public class AppUserController {
      */
     @PostMapping("/confirmRegister")
     public ResponseEntity<Object> confirmRegister(@RequestBody AppUserDto appUserDto, HttpServletRequest request) {
-        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName()).orElse(null);
+        AppUser appUser = appUserService.findByUsername(appUserDto.getUserName());
         if (appUser != null) {
             String userName = getUserNameFormJWT(request);
             if (userName.equals(appUser.getUserName())) {
@@ -323,11 +323,25 @@ public class AppUserController {
             return new ResponseEntity<>(errorMap, HttpStatus.NOT_ACCEPTABLE);
         }
 
+        AppUser appUserEmail = appUserService.findAppUserByEmail(appUserDto.getEmail()).orElse(null);
+        AppUser appUserName = appUserService.findByUsername(appUserDto.getUserName());
+
+        if (appUserName != null && appUserEmail != null) {
+            return new ResponseEntity<>("Email và username đã tồn tại", HttpStatus.CREATED);
+        } else {
+            if (appUserName != null) {
+                return new ResponseEntity<>("Username đã tồn tại", HttpStatus.CREATED);
+            }
+            if (appUserEmail != null) {
+                return new ResponseEntity<>("Email đã tồn tại", HttpStatus.CREATED);
+            }
+        }
 
         AppUser appUser = new AppUser();
         appUser.setUserName(appUserDto.getUserName());
         appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
-        Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser, "ROLE_ADMIN");
+        appUser.setEmail(appUserDto.getEmail());
+        Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser, "ROLE_EMPLOYEE");
         if (!Boolean.TRUE.equals(checkAddNewAppUser)) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -364,13 +378,53 @@ public class AppUserController {
     }
 
     @GetMapping("/get-obj-by-user")
-    public ResponseEntity<Object> getObj (HttpServletRequest request) {
+    public ResponseEntity<Object> getObj(HttpServletRequest request) {
         String userNameJWT = getUserNameFormJWT(request);
-        AppUser appUser = appUserService.findByUsername(userNameJWT).orElse(null);
+        AppUser appUser = appUserService.findByUsername(userNameJWT);
         if (appUser != null) {
             return ResponseEntity.ok().body(appUserService.getObjByAppUser(appUser));
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/forgotPass")
+    public ResponseEntity<Object> forgot(@RequestBody AppUserDto appUserDto) throws MessagingException, UnsupportedEncodingException {
+        AppUser appUser = appUserService.findAppUserByEmail(appUserDto.getEmail()).orElse(null);
+        if (appUser == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            String subject = "Yêu cầu đạt lại mật khẩu - có hiệu lực trong 5 phút!";
+            appUserService.generateResetPass(appUser, passwordEncoder, subject, "Yêu cầu đặt lại mật khẩu");
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @PostMapping("/forgot/{username}/{url}")
+    public ResponseEntity<Object> confirmForgot(@PathVariable String username, @PathVariable String url, @RequestBody AppUserDto appUserDto) {
+        AppUser appUser = appUserService.findByUsername(username);
+        if (appUser.getUrlResetPassWord().equals(url) && appUser.isResetPassRequired()) {
+            appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
+            appUser.setDateResetPassWord(null);
+            appUser.setUrlResetPassWord(null);
+            appUserService.save(appUser);
+            return new ResponseEntity<>(appUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/check/{username}/{url}")
+    public ResponseEntity<Object> checkUrl(@PathVariable String username, @PathVariable String url) {
+        AppUser appUser = appUserService.findAppUserByUrlResetPassWord(url).orElse(null);
+        if (appUser != null) {
+            if (appUser.getUserName().equals(username) && appUser.isResetPassRequired()) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 }

@@ -207,12 +207,63 @@ public class AppUserService implements IAppUserService {
             }
         }
 
+        helper.setSubject(subject);
+        helper.setText(content, true);
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendResetPassEmail(AppUser appUser, String URL, String subject, String title) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("thehome@gmail.com", "#Thehome - " + title);
+        helper.setTo(appUser.getEmail());
+
+//        String subject = "Xác thực mật khẩu (OTP) - Expire in 5 minutes!";
+        String content;
+
+        Customer customer = customerService.findCustomerByAppUser(appUser.getId()).orElse(null);
+
+        if (customer != null) {
+            if (customer.getName() == null) {
+                content = EmailTemplate.getEmailUrl(appUser.getUserName(), URL);
+            } else {
+                if (customer.getName().trim().equals("")) {
+                    content = EmailTemplate.getEmailUrl(appUser.getUserName(), URL);
+                } else {
+                    content = EmailTemplate.getEmailUrl(customer.getName(), URL);
+                }
+            }
+        } else {
+            Employee employee = employeeService.getEmployeeByUserName(appUser.getUserName()).orElse(null);
+            if (employee == null) {
+                content = EmailTemplate.getEmailUrl(appUser.getUserName(), URL);
+            } else {
+                if (employee.getNameEmployee().trim().equals("")) {
+                    content = EmailTemplate.getEmailUrl(appUser.getUserName(), URL);
+                } else {
+                    content = EmailTemplate.getEmailUrl(employee.getNameEmployee(), URL);
+                }
+            }
+        }
 
         helper.setSubject(subject);
-
         helper.setText(content, true);
-
         mailSender.send(message);
+    }
+
+    @Override
+    public void generateResetPass(AppUser appUser, PasswordEncoder passwordEncoder, String subject, String title) throws MessagingException, UnsupportedEncodingException {
+        String URL = RandomString.make(50);
+        String resetByUrl = "http://localhost:3000/forgot/" + appUser.getUserName() + "/" + URL;
+
+        appUser.setUrlResetPassWord(URL);
+        appUser.setDateResetPassWord(new Date());
+
+        appUserRepository.updateUrlResetPass(appUser);
+
+        sendResetPassEmail(appUser, resetByUrl, subject, title);
     }
 
     /**
@@ -223,8 +274,8 @@ public class AppUserService implements IAppUserService {
      * return Optional
      */
     @Override
-    public Optional<AppUser> findByUsername(String name) {
-        return appUserRepository.findAppUserByUserName(name);
+    public AppUser findByUsername(String name) {
+        return appUserRepository.findAppUserByUserName(name).orElse(null);
     }
 
     /**
@@ -274,6 +325,16 @@ public class AppUserService implements IAppUserService {
         } else {
             return Optional.ofNullable(employee);
         }
+    }
+
+    @Override
+    public Optional<AppUser> findAppUserByEmail(String email) {
+        return appUserRepository.findAppUserByEmail(email);
+    }
+
+    @Override
+    public Optional<AppUser> findAppUserByUrlResetPassWord(String urlResetPassWord) {
+        return appUserRepository.findAppUserByUrlResetPassWord(urlResetPassWord);
     }
 
     @Override

@@ -35,6 +35,9 @@ public class AppUser {
     @Column(name = "otp_requested_time")
     private Date otpRequestedTime;
 
+    private String urlResetPassWord;
+    private Date dateResetPassWord;
+
     @JsonBackReference
     @OneToMany(mappedBy = "appUser", fetch = FetchType.EAGER)
     private Set<UserRole> userRoleSet;
@@ -43,9 +46,19 @@ public class AppUser {
         if (this.getOneTimePassword() == null) {
             return false;
         }
-
         long currentTimeInMillis = System.currentTimeMillis();
         long otpRequestedTimeInMillis = this.otpRequestedTime.getTime();
+
+        // OTP expires
+        return otpRequestedTimeInMillis + OTP_VALID_DURATION >= currentTimeInMillis;
+    }
+
+    public boolean isResetPassRequired() {
+        if (this.getUrlResetPassWord() == null) {
+            return false;
+        }
+        long currentTimeInMillis = System.currentTimeMillis();
+        long otpRequestedTimeInMillis = this.dateResetPassWord.getTime();
 
         // OTP expires
         return otpRequestedTimeInMillis + OTP_VALID_DURATION >= currentTimeInMillis;

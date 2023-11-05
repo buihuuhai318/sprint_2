@@ -28,7 +28,12 @@ public interface IAppUserService extends UserDetailsService, IGenerateService<Ap
 
     void sendOTPEmail(AppUser appUser, String OTP, String subject, String title) throws MessagingException, UnsupportedEncodingException;
 
-    Optional<AppUser> findByUsername(String name);
+    void sendResetPassEmail(AppUser appUser, String OTP, String subject, String title) throws MessagingException, UnsupportedEncodingException;
+
+    void generateResetPass(AppUser appUser, PasswordEncoder passwordEncoder, String subject, String title) throws MessagingException, UnsupportedEncodingException;
+
+
+    AppUser findByUsername(String name);
 
     AppUser findAppUserById(Long id);
     void updateInfoUser(AppUser appUser);
@@ -36,4 +41,8 @@ public interface IAppUserService extends UserDetailsService, IGenerateService<Ap
     void updatePass(AppUser appUser);
 
     Optional<Object> getObjByAppUser(AppUser appUser);
+
+    Optional<AppUser> findAppUserByEmail(String email);
+
+    Optional<AppUser> findAppUserByUrlResetPassWord(String urlResetPassWord);
 }

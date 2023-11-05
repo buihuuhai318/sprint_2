@@ -47,8 +47,8 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
      */
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO app_user (user_name, password,flag_online, flag_deleted)\n" +
-            "VALUES (:#{#appUser.userName},:#{#appUser.password}, 0, 0)", nativeQuery = true)
+    @Query(value = "INSERT INTO app_user (user_name, password, email, flag_online, flag_deleted)\n" +
+            "VALUES (:#{#appUser.userName},:#{#appUser.password}, :#{#appUser.email}, 0, 0)", nativeQuery = true)
     Integer addNewAppUser(AppUser appUser);
 
     /**
@@ -130,6 +130,15 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
             "where id = :#{#appUser.id} ",nativeQuery = true)
     void updateOtp(AppUser appUser);
 
+    @Modifying
+    @Transactional
+    @Query(value = "update app_user " +
+            "set " +
+            "url_reset_pass_word = :#{#appUser.urlResetPassWord}, " +
+            "date_reset_pass_word = :#{#appUser.dateResetPassWord} " +
+            "where id = :#{#appUser.id} ",nativeQuery = true)
+    void updateUrlResetPass(AppUser appUser);
+
     /**
      * method updateInfoUser
      * Create HaiBH
@@ -163,4 +172,8 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
             "password = :#{#appUser.password} " +
             "where id = :#{#appUser.id} ",nativeQuery = true)
     void updatePass(AppUser appUser);
+
+    Optional<AppUser> findAppUserByEmail(String email);
+
+    Optional<AppUser> findAppUserByUrlResetPassWord(String urlResetPassWord);
 }
