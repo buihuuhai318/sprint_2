@@ -1,6 +1,5 @@
 package com.example.sprint_2_api.dto.project;
 
-import java.util.List;
 
 public interface ProjectDto {
     Long getId();

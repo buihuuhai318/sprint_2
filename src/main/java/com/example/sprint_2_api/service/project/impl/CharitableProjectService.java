@@ -47,4 +47,14 @@ public class CharitableProjectService implements ICharitableProjectService {
     public Page<ProjectDto> findAllByCard(Pageable pageable) {
         return charitableProjectRepository.findAllByCard(pageable);
     }
+
+    @Override
+    public Page<ProjectDto> findAllByCardWithType(Pageable pageable, Long id) {
+        return charitableProjectRepository.findAllByCardWithType(pageable, id);
+    }
+
+    @Override
+    public Page<ProjectDto> findAllByCardWithSearch(Pageable pageable, String value) {
+        return charitableProjectRepository.findAllByCardWithSearch(pageable, "%" + value + "%");
+    }
 }

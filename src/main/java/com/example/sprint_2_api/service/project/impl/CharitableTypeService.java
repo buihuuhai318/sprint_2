@@ -34,4 +34,9 @@ public class CharitableTypeService implements ICharitableTypeService {
     public void remove(Long id) {
         charitableTypeRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<List<CharitableType>> allList(Long id) {
+        return charitableTypeRepository.allList(id);
+    }
 }

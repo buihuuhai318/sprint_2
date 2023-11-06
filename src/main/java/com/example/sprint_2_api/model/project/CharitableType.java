@@ -18,7 +18,14 @@ public class CharitableType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String code;
+
     private String name;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String image;
+
+    private String description;
 
     @JsonBackReference
     @ManyToMany

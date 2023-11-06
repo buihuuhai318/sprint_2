@@ -11,4 +11,8 @@ public interface ICharitableProjectService extends IGenerateService<CharitablePr
     Page<CharitableProject> findAll(Pageable pageable);
 
     Page<ProjectDto> findAllByCard(Pageable pageable);
+
+    Page<ProjectDto> findAllByCardWithType(Pageable pageable, Long id);
+
+    Page<ProjectDto> findAllByCardWithSearch(Pageable pageable, String value);
 }
