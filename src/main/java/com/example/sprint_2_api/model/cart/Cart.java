@@ -35,4 +35,6 @@ public class Cart {
     private Long money;
 
     private Date createDate;
+
+    private int payStatus;
 }

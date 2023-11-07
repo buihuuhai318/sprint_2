@@ -38,12 +38,16 @@ public class AppUserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private IAppUserService appUserService;
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private ICustomerService customerService;
 
