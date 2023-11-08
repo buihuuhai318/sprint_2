@@ -9,4 +9,6 @@ public interface ICartDto {
     Integer getDate();
 
     Long getMoney();
+
+    Long getProjectId();
 }

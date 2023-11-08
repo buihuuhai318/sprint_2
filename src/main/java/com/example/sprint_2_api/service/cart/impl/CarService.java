@@ -60,4 +60,9 @@ public class CarService implements ICartService {
     public List<ICartDto> findCartsDto(Long id) {
         return cartRepository.findCartsDto(id);
     }
+
+    @Override
+    public List<ICartDto> findCartsDtoByBill(Long id) {
+        return cartRepository.findCartsDtoByBill(id);
+    }
 }

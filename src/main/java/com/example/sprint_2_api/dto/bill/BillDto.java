@@ -1,20 +1,18 @@
-package com.example.sprint_2_api.model.bill;
+package com.example.sprint_2_api.dto.bill;
 
+import com.example.sprint_2_api.dto.cart.ICartDto;
+import com.example.sprint_2_api.model.bill.Payment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class Bill {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BillDto {
     private Long id;
 
     private Long totalMoney;
@@ -23,11 +21,11 @@ public class Bill {
 
     private Date paymentDate;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
 
     private String paymentCode;
 
     private Integer statusPayment;
+
+    private List<ICartDto> list;
 }

@@ -16,4 +16,6 @@ public interface ICartService extends IGenerateService<Cart> {
     Long sumCart(Long id, int status);
 
     List<ICartDto> findCartsDto(Long id);
+
+    List<ICartDto> findCartsDtoByBill(Long id);
 }

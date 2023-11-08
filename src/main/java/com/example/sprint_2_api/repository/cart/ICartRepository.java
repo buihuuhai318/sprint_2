@@ -14,11 +14,16 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
 
     List<Cart> findCartsByAppUser_IdAndPayStatus(Long id, int status);
 
-    @Query(value = "select c.id as id, cp.title as title, datediff(cp.end_date, curdate()) as date, c.money as money " +
+    @Query(value = "select c.id as id, cp.title as title, datediff(cp.end_date, curdate()) as date, c.money as money, cp.id as projectId " +
             "from cart c " +
             "join charitable_project cp on c.charitable_project_id = cp.id " +
             "where c.user_id = :id and c.pay_status = 0 ", nativeQuery = true)
     List<ICartDto> findCartsDto(Long id);
 
-
+    @Query(value = "select c.id as id, cp.title as title, datediff(cp.end_date, curdate()) as date, c.money as money, cp.id as projectId " +
+            "from cart c " +
+            "join charitable_project cp on c.charitable_project_id = cp.id " +
+            "join bill b on b.id = c.bill_id " +
+            "where b.id = :id ", nativeQuery = true)
+    List<ICartDto> findCartsDtoByBill(Long id);
 }
