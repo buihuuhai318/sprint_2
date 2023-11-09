@@ -105,6 +105,11 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    public Optional<Customer> findCustomerByAppUser_Id(Long id) {
+        return customerRepository.findCustomerByAppUser_Id(id);
+    }
+
+    @Override
     public List<Customer> findAll() {
         return customerRepository.findAll();
     }

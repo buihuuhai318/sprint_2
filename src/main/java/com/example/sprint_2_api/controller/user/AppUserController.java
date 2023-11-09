@@ -6,6 +6,7 @@ import com.example.sprint_2_api.config.JwtTokenUtil;
 import com.example.sprint_2_api.dto.user.AppUserDto;
 import com.example.sprint_2_api.dto.user.FacebookUser;
 import com.example.sprint_2_api.dto.user.UserInfoDto;
+import com.example.sprint_2_api.model.customer.Customer;
 import com.example.sprint_2_api.model.user.AppUser;
 import com.example.sprint_2_api.model.user.JwtResponse;
 import com.example.sprint_2_api.service.customer.ICustomerService;
@@ -345,7 +346,11 @@ public class AppUserController {
         appUser.setUserName(appUserDto.getUserName());
         appUser.setPassword(passwordEncoder.encode(appUserDto.getPassword()));
         appUser.setEmail(appUserDto.getEmail());
-        Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser, "ROLE_EMPLOYEE");
+        Boolean checkAddNewAppUser = appUserService.createNewAppUser(appUser, "ROLE_CUSTOMER");
+        Customer customer = new Customer();
+        customer.setName("Nhà Hảo Tâm");
+        customer.setAppUser(appUserService.findByUsername(appUser.getUserName()));
+        customerService.save(customer);
         if (!Boolean.TRUE.equals(checkAddNewAppUser)) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -38,4 +38,6 @@ public interface ICustomerService extends IGenerateService<Customer> {
     boolean deleteCustomerById(Long id);
 
     Page<ICustomerDtoForProject> findHistory(Pageable pageable, Long id);
+
+    Optional<Customer> findCustomerByAppUser_Id(Long id);
 }

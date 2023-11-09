@@ -83,4 +83,6 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
             "WHERE ca.pay_status = 1 and au.id = :id " +
             "ORDER BY ca.create_date desc ", nativeQuery = true)
     Page<ICustomerDtoForProject> findHistory(Pageable pageable, Long id);
+
+    Optional<Customer> findCustomerByAppUser_Id(Long id);
 }
