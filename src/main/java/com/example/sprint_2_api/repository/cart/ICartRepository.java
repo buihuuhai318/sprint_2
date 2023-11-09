@@ -1,6 +1,7 @@
 package com.example.sprint_2_api.repository.cart;
 
 import com.example.sprint_2_api.dto.cart.ICartDto;
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.cart.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,23 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
             "join bill b on b.id = c.bill_id " +
             "where b.id = :id ", nativeQuery = true)
     List<ICartDto> findCartsDtoByBill(Long id);
+
+    @Query(value = "SELECT au.id as id, c.name as name, SUM(ca.money) AS money " +
+            "FROM app_user au " +
+            "JOIN customer c ON c.app_user_id = au.id " +
+            "JOIN cart ca ON ca.user_id = au.id " +
+            "JOIN charitable_project cp ON cp.id = ca.charitable_project_id " +
+            "WHERE ca.pay_status = 1 AND cp.id = :id " +
+            "GROUP BY au.id, c.name " +
+            "order by money desc limit 10 ", nativeQuery = true)
+    List<ICustomerDtoForProject> findCustomerMost(Long id);
+
+    @Query(value = "SELECT au.id as id, c.name as name, ca.money as money ,ca.create_date " +
+            "FROM app_user au " +
+            "JOIN customer c ON c.app_user_id = au.id " +
+            "JOIN cart ca ON ca.user_id = au.id " +
+            "JOIN charitable_project cp ON cp.id = ca.charitable_project_id " +
+            "WHERE ca.pay_status = 1 AND cp.id = :id " +
+            "ORDER BY ca.create_date desc limit 10 ", nativeQuery = true)
+    List<ICustomerDtoForProject> findCustomerLast(Long id);
 }

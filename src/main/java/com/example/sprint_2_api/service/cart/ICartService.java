@@ -1,6 +1,7 @@
 package com.example.sprint_2_api.service.cart;
 
 import com.example.sprint_2_api.dto.cart.ICartDto;
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.cart.Cart;
 import com.example.sprint_2_api.service.IGenerateService;
 
@@ -18,4 +19,8 @@ public interface ICartService extends IGenerateService<Cart> {
     List<ICartDto> findCartsDto(Long id);
 
     List<ICartDto> findCartsDtoByBill(Long id);
+
+    List<ICustomerDtoForProject> findCustomerMost(Long id);
+
+    List<ICustomerDtoForProject> findCustomerLast(Long id);
 }

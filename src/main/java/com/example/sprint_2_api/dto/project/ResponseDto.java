@@ -1,5 +1,6 @@
 package com.example.sprint_2_api.dto.project;
 
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.project.ProjectImage;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +15,8 @@ public class ResponseDto {
     List<String> stringList;
 
     Long day;
+
+    List<ICustomerDtoForProject> last;
+
+    List<ICustomerDtoForProject> most;
 }

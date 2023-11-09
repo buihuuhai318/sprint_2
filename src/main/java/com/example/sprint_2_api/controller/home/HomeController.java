@@ -5,6 +5,7 @@ import com.example.sprint_2_api.dto.project.ResponseDto;
 import com.example.sprint_2_api.model.company.Company;
 import com.example.sprint_2_api.model.project.CharitableProject;
 import com.example.sprint_2_api.model.project.CharitableType;
+import com.example.sprint_2_api.service.cart.ICartService;
 import com.example.sprint_2_api.service.company.ICompanyService;
 import com.example.sprint_2_api.service.project.ICharitableProjectService;
 import com.example.sprint_2_api.service.project.ICharitableTypeService;
@@ -33,6 +34,9 @@ public class HomeController {
 
     @Autowired
     private ICharitableTypeService charitableTypeService;
+
+    @Autowired
+    private ICartService cartService;
 
     @GetMapping("/types")
     public ResponseEntity<List<CharitableType>> listTypes() {
@@ -79,6 +83,8 @@ public class HomeController {
         responseDto.setDay(days);
         responseDto.setList(charitableProject.getImageProjectList());
         responseDto.setStringList(story);
+        responseDto.setMost(cartService.findCustomerMost(id));
+        responseDto.setLast(cartService.findCustomerLast(id));
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -91,5 +97,18 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
+    @GetMapping("/projects/getOther")
+    public ResponseEntity<Page<ProjectDto>> getOther(@RequestParam(name = "limit") int limit) {
+        if (limit == 1) {
+            Pageable pageable = PageRequest.of(0, 1);
+            Page<ProjectDto> charitableProjects = charitableProjectService.findAllByCardOther(pageable, 1);
+            return new ResponseEntity<>(charitableProjects, HttpStatus.OK);
+        } else {
+            Pageable pageable = PageRequest.of(0, 3);
+            Page<ProjectDto> charitableProjects = charitableProjectService.findAllByCardOther(pageable, 3);
+            return new ResponseEntity<>(charitableProjects, HttpStatus.OK);
+        }
     }
 }

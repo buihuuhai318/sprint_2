@@ -1,6 +1,7 @@
 package com.example.sprint_2_api.service.cart.impl;
 
 import com.example.sprint_2_api.dto.cart.ICartDto;
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.cart.Cart;
 import com.example.sprint_2_api.repository.cart.ICartRepository;
 import com.example.sprint_2_api.service.cart.ICartService;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CarService implements ICartService {
+public class CartService implements ICartService {
 
     @Autowired
     private ICartRepository cartRepository;
@@ -64,5 +65,15 @@ public class CarService implements ICartService {
     @Override
     public List<ICartDto> findCartsDtoByBill(Long id) {
         return cartRepository.findCartsDtoByBill(id);
+    }
+
+    @Override
+    public List<ICustomerDtoForProject> findCustomerMost(Long id) {
+        return cartRepository.findCustomerMost(id);
+    }
+
+    @Override
+    public List<ICustomerDtoForProject> findCustomerLast(Long id) {
+        return cartRepository.findCustomerLast(id);
     }
 }
