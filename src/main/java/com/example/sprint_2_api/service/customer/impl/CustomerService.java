@@ -2,6 +2,7 @@ package com.example.sprint_2_api.service.customer.impl;
 
 import com.example.sprint_2_api.dto.customer.FormatCustomer;
 import com.example.sprint_2_api.dto.customer.ICustomerDto;
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.customer.Customer;
 import com.example.sprint_2_api.repository.customer.ICustomerRepository;
 import com.example.sprint_2_api.service.customer.ICustomerService;
@@ -96,6 +97,11 @@ public class CustomerService implements ICustomerService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Page<ICustomerDtoForProject> findHistory(Pageable pageable, Long id) {
+        return customerRepository.findHistory(pageable, id);
     }
 
     @Override

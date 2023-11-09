@@ -1,6 +1,7 @@
 package com.example.sprint_2_api.service.customer;
 
 import com.example.sprint_2_api.dto.customer.ICustomerDto;
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.customer.Customer;
 import com.example.sprint_2_api.service.IGenerateService;
 import org.springframework.data.domain.Page;
@@ -35,4 +36,6 @@ public interface ICustomerService extends IGenerateService<Customer> {
     Page<ICustomerDto> findAllCustomer(String name, String code, String address, String phoneNumber, String groupValue, Pageable pageable);
 
     boolean deleteCustomerById(Long id);
+
+    Page<ICustomerDtoForProject> findHistory(Pageable pageable, Long id);
 }

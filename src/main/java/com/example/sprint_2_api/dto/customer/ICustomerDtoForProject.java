@@ -6,4 +6,16 @@ public interface ICustomerDtoForProject {
     String getName();
 
     Long getMoney();
+
+    String getDate();
+
+    String getTitle();
+
+    Long getProjectId();
+
+    String getEmail();
+
+    Long getMoneySum();
+
+    Long getCount();
 }

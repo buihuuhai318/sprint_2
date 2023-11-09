@@ -1,6 +1,7 @@
 package com.example.sprint_2_api.repository.customer;
 
 import com.example.sprint_2_api.dto.customer.ICustomerDto;
+import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
 import com.example.sprint_2_api.model.customer.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -73,4 +74,13 @@ public interface ICustomerRepository extends JpaRepository<Customer, Long> {
     @Transactional
     @Query(value = " UPDATE  customer set flag_delete = true WHERE id = :id ", nativeQuery = true)
     void removeCustomer(@Param(value = "id") Long id);
+
+    @Query(value = "SELECT au.id as id, c.name as name, ca.money as money ,ca.create_date as date, cp.title as title, cp.id as projectId, au.email as email,  SUM(ca.money) OVER (PARTITION BY au.id) as moneySum, COUNT(*) OVER (PARTITION BY au.id) as count " +
+            "FROM app_user au " +
+            "JOIN customer c ON c.app_user_id = au.id " +
+            "JOIN cart ca ON ca.user_id = au.id " +
+            "JOIN charitable_project cp ON cp.id = ca.charitable_project_id " +
+            "WHERE ca.pay_status = 1 and au.id = :id " +
+            "ORDER BY ca.create_date desc ", nativeQuery = true)
+    Page<ICustomerDtoForProject> findHistory(Pageable pageable, Long id);
 }
