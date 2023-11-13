@@ -27,6 +27,6 @@ public interface IEmployeeService extends IGenerateService<Employee> {
 
     Optional<Employee> getByPhoneNumber(String phoneNumber,Long id);
 
-    Optional<Employee> getEmployeeByUserName(String username);
+    Optional<Employee> getEmployeeByAndAppUser_Id(Long id);
 
 }

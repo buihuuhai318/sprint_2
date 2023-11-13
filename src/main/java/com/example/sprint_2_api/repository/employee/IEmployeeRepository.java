@@ -59,9 +59,6 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "update employee set flag_delete = true where employee.id = :id", nativeQuery = true)
     void deleteEmployeeById(@Param("id") Long id);
 
-    @Query(value = "SELECT e.id ,e.address,e.birthday,e.code_employee,e.flag_delete," +
-            "e.id_card,e.image,e.name_employee,e.note,e.phone_number,e.start_day,e.app_user_id" +
-            " FROM employee e join app_user a on e.app_user_id = a.id" +
-            " where a.user_name = :username and e.flag_delete = 0", nativeQuery = true)
-    Optional<Employee> getEmployeeByUserName(@Param("username") String username);
+
+    Optional<Employee> getEmployeeByAndAppUser_Id(Long id);
 }

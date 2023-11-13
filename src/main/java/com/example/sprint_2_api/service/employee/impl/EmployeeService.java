@@ -76,8 +76,8 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public Optional<Employee> getEmployeeByUserName(String username) {
-        return employeeRepository.getEmployeeByUserName(username);
+    public Optional<Employee> getEmployeeByAndAppUser_Id(Long id) {
+        return employeeRepository.getEmployeeByAndAppUser_Id(id);
     }
 
     @Override

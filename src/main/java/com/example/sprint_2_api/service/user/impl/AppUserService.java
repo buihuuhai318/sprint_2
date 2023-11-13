@@ -195,7 +195,7 @@ public class AppUserService implements IAppUserService {
                 }
             }
         } else {
-            Employee employee = employeeService.getEmployeeByUserName(appUser.getUserName()).orElse(null);
+            Employee employee = employeeService.getEmployeeByAndAppUser_Id(appUser.getId()).orElse(null);
             if (employee == null) {
                 content = EmailTemplate.getTemplateEmail(appUser.getUserName(), OTP);
             } else {
@@ -236,7 +236,7 @@ public class AppUserService implements IAppUserService {
                 }
             }
         } else {
-            Employee employee = employeeService.getEmployeeByUserName(appUser.getUserName()).orElse(null);
+            Employee employee = employeeService.getEmployeeByAndAppUser_Id(appUser.getId()).orElse(null);
             if (employee == null) {
                 content = EmailTemplate.getEmailUrl(appUser.getUserName(), URL);
             } else {
@@ -318,7 +318,7 @@ public class AppUserService implements IAppUserService {
     public Optional<Object> getObjByAppUser(AppUser appUser) {
 
         Customer customer = customerService.findCustomerByAppUser(appUser.getId()).orElse(null);
-        Employee employee = employeeService.getEmployeeByUserName(appUser.getUserName()).orElse(null);
+        Employee employee = employeeService.getEmployeeByAndAppUser_Id(appUser.getId()).orElse(null);
 
         if (customer != null) {
             return Optional.of(customer);

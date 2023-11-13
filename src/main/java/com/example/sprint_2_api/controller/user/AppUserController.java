@@ -29,6 +29,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -436,4 +437,31 @@ public class AppUserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+    public static int romanToInt(String roman) {
+        if (roman == null || roman.length() == 0) {
+            return 0;
+        }
+        HashMap<Character, Integer> romanMap = new HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
+        int result = romanMap.get(roman.charAt(roman.length() - 1));
+        for (int i = roman.length() - 2; i >= 0; i--) {
+            if (romanMap.get(roman.charAt(i)) < romanMap.get(roman.charAt(i + 1))) {
+                result -= romanMap.get(roman.charAt(i));
+            } else {
+                result += romanMap.get(roman.charAt(i));
+            }
+        }
+        return result;
+    }
 }
+
+
+
+

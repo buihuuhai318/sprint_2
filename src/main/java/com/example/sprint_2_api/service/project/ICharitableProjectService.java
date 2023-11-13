@@ -6,6 +6,8 @@ import com.example.sprint_2_api.service.IGenerateService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface ICharitableProjectService extends IGenerateService<CharitableProject> {
 
     Page<CharitableProject> findAll(Pageable pageable);
@@ -17,4 +19,16 @@ public interface ICharitableProjectService extends IGenerateService<CharitablePr
     Page<ProjectDto> findAllByCardWithSearch(Pageable pageable, String value);
 
     Page<ProjectDto> findAllByCardOther(Pageable pageable, int limit);
+
+    Long countOfToDay();
+
+    Long sumMoneyOfToDay();
+
+    Long countOfMonth();
+
+    Long sumMoneyOfMonth();
+
+    List<List<Long>> listByDay();
+
+    public List<List<Long>> mapChartTypeMonth();
 }

@@ -1,4 +1,4 @@
-package com.example.sprint_2_api.controller.home;
+package com.example.sprint_2_api.controller.customer;
 
 import com.example.sprint_2_api.config.JwtTokenUtil;
 import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;

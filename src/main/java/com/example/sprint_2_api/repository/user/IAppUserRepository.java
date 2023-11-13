@@ -22,7 +22,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
      * param String username
      * return AppUser
      */
-    @Transactional()
+    @Transactional
     @Query(value = "select * from app_user where user_name = :name and flag_deleted = 0 ", nativeQuery = true)
     AppUser findAppUserByName(@Param("name") String userName);
 
@@ -33,7 +33,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
      * param Long id
      * return AppUser
      */
-    @Transactional()
+    @Transactional
     @Query(value = "select * from app_user where id = :id and flag_deleted = 0 ", nativeQuery = true)
     AppUser findAppUserById(@Param("id") Long id);
 
@@ -47,7 +47,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
      */
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO app_user (user_name, password, email, flag_online, flag_deleted)\n" +
+    @Query(value = "INSERT INTO app_user (user_name, password, email, flag_online, flag_deleted) " +
             "VALUES (:#{#appUser.userName},:#{#appUser.password}, :#{#appUser.email}, 0, 0)", nativeQuery = true)
     Integer addNewAppUser(AppUser appUser);
 

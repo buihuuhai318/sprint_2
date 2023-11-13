@@ -50,4 +50,6 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "app_user_id", nullable = false, unique = true)
     private AppUser appUser;
+
+    private String email;
 }
