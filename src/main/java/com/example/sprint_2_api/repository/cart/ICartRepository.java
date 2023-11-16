@@ -2,7 +2,10 @@ package com.example.sprint_2_api.repository.cart;
 
 import com.example.sprint_2_api.dto.cart.ICartDto;
 import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
+import com.example.sprint_2_api.dto.history.IHistoryDto;
 import com.example.sprint_2_api.model.cart.Cart;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -46,4 +49,15 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
             "WHERE ca.pay_status = 1 AND cp.id = :id " +
             "ORDER BY ca.create_date desc limit 10 ", nativeQuery = true)
     List<ICustomerDtoForProject> findCustomerLast(Long id);
+
+    @Query(value = "select c.id as id, cp.title as title, c.create_date as date, c.money as money, cp.id as projectId, cu.name as name, cu.id as customerId, au.id as userId " +
+            "from cart c " +
+            "join charitable_project cp on c.charitable_project_id = cp.id " +
+            "join project_type pt on pt.project_id = cp.id " +
+            "join app_user au on au.id = c.user_id " +
+            "join customer cu on cu.app_user_id = au.id " +
+            "where c.pay_status = 1 " +
+            "group by c.id " +
+            "order by c.id ", nativeQuery = true)
+    Page<IHistoryDto> findAllHistory(Pageable pageable);
 }

@@ -362,10 +362,10 @@ public class AppUserController {
 
     @PostMapping("/login-by-facebook")
     public ResponseEntity<Object> loginByFacebook(@RequestBody FacebookUser facebookMailRequest) {
-        if (facebookMailRequest == null ||
-                facebookMailRequest.getEmail() == null ||
-                facebookMailRequest.getEmail().trim().equals("")) {
+        if (facebookMailRequest == null) {
             return ResponseEntity.badRequest().body(LOGIN_FAILED);
+        } else if (facebookMailRequest.getEmail() == null || facebookMailRequest.getEmail().trim().equals("")) {
+            facebookMailRequest.setEmail(facebookMailRequest.getSub());
         }
 
         String facebookMail = facebookMailRequest.getEmail();

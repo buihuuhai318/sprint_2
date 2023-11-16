@@ -140,6 +140,9 @@ public class CartController {
             cartService.save(cart);
         });
         List<ICartDto> cartDtoList = cartService.findCartsDtoByBill(bill.getId());
+        for (ICartDto cartDto : cartDtoList) {
+            charitableProjectService.changeStatus(cartDto.getProjectId());
+        }
         BillDto billDto = new BillDto();
         BeanUtils.copyProperties(bill, billDto);
         billDto.setList(cartDtoList);

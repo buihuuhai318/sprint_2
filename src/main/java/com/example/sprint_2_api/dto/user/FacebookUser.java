@@ -12,4 +12,6 @@ public class FacebookUser {
     private String name;
 
     private String email;
+
+    private String sub;
 }

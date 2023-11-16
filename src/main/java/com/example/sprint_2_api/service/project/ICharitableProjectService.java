@@ -30,5 +30,7 @@ public interface ICharitableProjectService extends IGenerateService<CharitablePr
 
     List<List<Long>> listByDay();
 
-    public List<List<Long>> mapChartTypeMonth();
+    List<List<Long>> mapChartTypeMonth();
+
+    void changeStatus(Long id);
 }

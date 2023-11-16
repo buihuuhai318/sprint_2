@@ -2,10 +2,13 @@ package com.example.sprint_2_api.service.cart.impl;
 
 import com.example.sprint_2_api.dto.cart.ICartDto;
 import com.example.sprint_2_api.dto.customer.ICustomerDtoForProject;
+import com.example.sprint_2_api.dto.history.IHistoryDto;
 import com.example.sprint_2_api.model.cart.Cart;
 import com.example.sprint_2_api.repository.cart.ICartRepository;
 import com.example.sprint_2_api.service.cart.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,5 +78,10 @@ public class CartService implements ICartService {
     @Override
     public List<ICustomerDtoForProject> findCustomerLast(Long id) {
         return cartRepository.findCustomerLast(id);
+    }
+
+    @Override
+    public Page<IHistoryDto> findAllHistory(Pageable pageable) {
+        return cartRepository.findAllHistory(pageable);
     }
 }

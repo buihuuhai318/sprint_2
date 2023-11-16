@@ -82,6 +82,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
      * param String userName
      * return Long
      */
+    @Transactional
     @Query(value = " select au.id from app_user au where au.user_name = :userName ",nativeQuery = true)
     Long findIdByUserName(@Param("userName") String userName);
 
@@ -92,8 +93,9 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
      * param String name
      * return Long
      */
+    @Transactional
     @Query(value =  " select r.id from app_role r where r.name = :name " ,nativeQuery = true)
-    Long findAppRoleIdByName(@Param("name")String name);
+    Long findAppRoleIdByName(@Param("name") String name);
 
     /**
      * method insertRoleForCustomer
@@ -112,6 +114,7 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
     boolean existsById(Long aLong);
 
 
+    @Transactional
     Optional<AppUser> findAppUserByUserName(String name);
 
     /**
@@ -173,7 +176,11 @@ public interface IAppUserRepository extends JpaRepository<AppUser, Long> {
             "where id = :#{#appUser.id} ",nativeQuery = true)
     void updatePass(AppUser appUser);
 
+    @Modifying
+    @Transactional
     Optional<AppUser> findAppUserByEmail(String email);
 
+    @Modifying
+    @Transactional
     Optional<AppUser> findAppUserByUrlResetPassWord(String urlResetPassWord);
 }

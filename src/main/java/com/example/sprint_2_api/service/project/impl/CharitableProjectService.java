@@ -112,6 +112,15 @@ public class CharitableProjectService implements ICharitableProjectService {
     }
 
     @Override
+    public void changeStatus(Long id) {
+        CharitableProject charitableProject = charitableProjectRepository.getById(id);
+        if (charitableProject.getNow() > charitableProject.getTarget()) {
+            charitableProject.setStatus(1);
+            charitableProjectRepository.save(charitableProject);
+        }
+    }
+
+    @Override
     public Long countOfToDay() {
         Map<Long, Long> map = mapChartDay();
         return (long) map.size();

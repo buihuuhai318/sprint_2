@@ -43,6 +43,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation group: 'com.paypal.sdk', name: 'rest-api-sdk', version: '1.4.2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.0.4.RELEASE'
 }
 
 tasks.named('test') {
