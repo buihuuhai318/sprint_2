@@ -1,6 +1,7 @@
 package com.example.sprint_2_api.controller.home;
 
 import com.example.sprint_2_api.dto.project.ProjectDto;
+import com.example.sprint_2_api.model.company.Company;
 import com.example.sprint_2_api.model.project.CharitableType;
 import com.example.sprint_2_api.service.company.ICompanyService;
 import com.example.sprint_2_api.service.project.ICharitableProjectService;
@@ -40,9 +41,29 @@ public class ListController {
         return new ResponseEntity<>(charitableProjects, HttpStatus.OK);
     }
 
+    @GetMapping("/company/{id}")
+    public ResponseEntity<Page<ProjectDto>> getListByCompany(@PathVariable Long id, @RequestParam(name = "limit") int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        Page<ProjectDto> charitableProjects = charitableProjectService.findAllByCardWithCompany(pageable, id);
+        if (charitableProjects.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(charitableProjects, HttpStatus.OK);
+    }
+
     @GetMapping("/types/{id}")
     public ResponseEntity<List<CharitableType>> getTypes(@PathVariable Long id) {
         List<CharitableType> list = charitableTypeService.allList(id).orElse(null);
+        assert list != null;
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/companies/{id}")
+    public ResponseEntity<List<Company>> getCompany(@PathVariable Long id) {
+        List<Company> list = companyService.allList(id).orElse(null);
         assert list != null;
         if (list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

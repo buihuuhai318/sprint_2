@@ -99,6 +99,16 @@ public class HomeController {
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
+    @GetMapping("/companies-all")
+    public ResponseEntity<Page<Company>> listCompaniesAll() {
+        Pageable pageable = PageRequest.of(0, 100);
+        Page<Company> companies = companyService.findAll(pageable);
+        if (companies.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(companies, HttpStatus.OK);
+    }
+
     @GetMapping("/projects/getOther")
     public ResponseEntity<Page<ProjectDto>> getOther(@RequestParam(name = "limit") int limit) {
         if (limit == 1) {

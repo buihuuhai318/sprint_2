@@ -41,4 +41,9 @@ public class CompanyService implements ICompanyService {
     public Page<Company> findAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
+
+    @Override
+    public Optional<List<Company>> allList(Long id) {
+        return companyRepository.allList(id);
+    }
 }
