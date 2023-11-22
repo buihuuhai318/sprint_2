@@ -41,7 +41,7 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
             "order by money desc limit 10 ", nativeQuery = true)
     List<ICustomerDtoForProject> findCustomerMost(Long id);
 
-    @Query(value = "SELECT au.id as id, c.name as name, ca.money as money ,ca.create_date " +
+    @Query(value = "SELECT au.id as id, c.name as name, ca.money as money ,ca.create_date as date " +
             "FROM app_user au " +
             "JOIN customer c ON c.app_user_id = au.id " +
             "JOIN cart ca ON ca.user_id = au.id " +

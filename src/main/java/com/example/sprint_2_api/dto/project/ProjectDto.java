@@ -21,4 +21,6 @@ public interface ProjectDto {
     Integer getDate();
 
     Integer getStatus();
+
+    Long getCompanyId();
 }
