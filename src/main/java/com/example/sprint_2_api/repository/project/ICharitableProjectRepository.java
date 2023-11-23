@@ -22,7 +22,8 @@ public interface ICharitableProjectRepository extends JpaRepository<CharitablePr
             "join company_image ci on c.image_id = ci.id " +
             "join project_image pi on pi.project_id = cp.id " +
             "group by cp.id, cp.title, c.name, ci.name, cp.count, cp.now, cp.target " +
-            "having max(pi.name) is not null ", nativeQuery = true)
+            "having max(pi.name) is not null " +
+            "order by cp.end_date desc ", nativeQuery = true)
     Page<ProjectDto> findAllByCard(Pageable pageable);
 
     @Query(value = "select cp.id as id, cp.title as title, max(pi.name) as projectImage, c.name as company, ci.name as companyImage, cp.count as count, cp.now as now, cp.target as targetLimit, datediff(cp.end_date, curdate()) as date, cp.status as status, c.id as companyId " +
@@ -34,7 +35,8 @@ public interface ICharitableProjectRepository extends JpaRepository<CharitablePr
             "join project_image pi on pi.project_id = cp.id " +
             "where ct.id = :id " +
             "group by cp.id, cp.title, c.name, ci.name, cp.count, cp.now, cp.target " +
-            "having max(pi.name) is not null ", nativeQuery = true)
+            "having max(pi.name) is not null " +
+            "order by cp.end_date desc ", nativeQuery = true)
     Page<ProjectDto> findAllByCardWithType(Pageable pageable, Long id);
 
     @Query(value = "select cp.id as id, cp.title as title, max(pi.name) as projectImage, c.name as company, ci.name as companyImage, cp.count as count, cp.now as now, cp.target as targetLimit, datediff(cp.end_date, curdate()) as date, cp.status as status, c.id as companyId " +
@@ -46,7 +48,8 @@ public interface ICharitableProjectRepository extends JpaRepository<CharitablePr
             "join project_image pi on pi.project_id = cp.id " +
             "where c.id = :id " +
             "group by cp.id, cp.title, c.name, ci.name, cp.count, cp.now, cp.target " +
-            "having max(pi.name) is not null ", nativeQuery = true)
+            "having max(pi.name) is not null " +
+            "order by cp.end_date desc ", nativeQuery = true)
     Page<ProjectDto> findAllByCardWithCompany(Pageable pageable, Long id);
 
     @Query(value = "select cp.id as id, cp.title as title, max(pi.name) as projectImage, c.name as company, ci.name as companyImage, cp.count as count, cp.now as now, cp.target as targetLimit, datediff(cp.end_date, curdate()) as date, cp.status as status, c.id as companyId " +
@@ -58,7 +61,8 @@ public interface ICharitableProjectRepository extends JpaRepository<CharitablePr
             "join project_image pi on pi.project_id = cp.id " +
             "where title like :value or c.name like :value " +
             "group by cp.id, cp.title, c.name, ci.name, cp.count, cp.now, cp.target " +
-            "having max(pi.name) is not null ", nativeQuery = true)
+            "having max(pi.name) is not null " +
+            "order by cp.end_date desc ", nativeQuery = true)
     Page<ProjectDto> findAllByCardWithSearch(Pageable pageable, String value);
 
     @Query(value = "select cp.id as id, cp.title as title, max(pi.name) as projectImage, c.name as company, ci.name as companyImage, cp.count as count, cp.now as now, cp.target as targetLimit, datediff(cp.end_date, curdate()) as date, cp.status as status, c.id as companyId " +
